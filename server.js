@@ -1,7 +1,8 @@
 'use strict';
 
+const bodyParser = require('body-parser');
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
+const sqlite3 = require('sqlite3');
 const path = require('path');
 
 const app = express();
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 // APP MIDDLEWARE
 app.set('view engine', 'jade');
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({"extended": false}));
 
 
 // ROUTE MIDDLEWARE
@@ -22,14 +24,14 @@ app.get('/dashboard', (req,res) => {
 
 app.post('/dashboard/entries/new', (req,res) => {
   const QUERY = `
-    INSERT INTO DailyEntries (UserID,StepCount,Weight,TimeStamp)
+    INSERT INTO DailyEntries
     VALUES ($UserID,$StepCount,$Weight, $TimeStamp)
     `;
 
     db.all(QUERY, {
       $UserID: 2,
-      $StepCount: 12,
-      $Weight: 180,
+      $StepCount: req.body.steps,
+      $Weight: req.body.weight,
       $TimeStamp: Date()
       },
       (error, rows) => { res.send(error || rows); }
