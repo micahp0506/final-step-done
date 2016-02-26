@@ -24,18 +24,21 @@ app.get('/dashboard', (req,res) => {
 
 app.post('/dashboard/entries/new', (req,res) => {
   const QUERY = `
-    INSERT INTO DailyEntries
+    INSERT INTO DailyEntries (UserID, StepCount, Weight, TimeStamp)
     VALUES ($UserID,$StepCount,$Weight, $TimeStamp)
     `;
 
-    db.all(QUERY, {
-      $UserID: 2,
-      $StepCount: req.body.steps,
-      $Weight: req.body.weight,
-      $TimeStamp: Date()
-      },
-      (error, rows) => { res.send(error || rows); }
-    );
+  const date = new Date();
+
+  db.run(QUERY, {
+    $UserID: 2,
+    $StepCount: req.body.steps,
+    $Weight: req.body.weight,
+    $TimeStamp: date
+    },
+    (error) => { console.log(error); }
+  );
+  res.redirect('/dashboard/entries');
 });
 
 app.get('/dashboard/entries', (req,res) => {
