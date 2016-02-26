@@ -3,9 +3,12 @@ extends layout
 
 block content
     h1 Welcome to Your Daily Activity Tracker
-    form(action='/register', method='POST')
+    form(action='/dashboard/entries/new', method='POST')
         .input-group
-            label(for='step') Enter Step Count
-            input#step(type='text', name='step')
+            label(for='step') Enter step count for the day
+            input#step(type='number', name='step')
+        .input-group
+            label(for='weight') Enter your current weight
+            input#weight(type='number', name='weight')
         .input-group
             input(type='submit', value='Submit')

@@ -16,29 +16,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTE MIDDLEWARE
 app.get('/dashboard', (req,res) => {
-  res.render('index.jade');
+  res.render('dashboard.jade');
 });
 
 
 app.post('/dashboard/entries/new', (req,res) => {
   const QUERY = `
-    INSERT INTO DailyEntries(UserID,StepCount,Weight,TimeStamp)
-    VALUES ($UserID,$StepCount,$Weight, $TimeStamp
+    INSERT INTO DailyEntries (UserID,StepCount,Weight,TimeStamp)
+    VALUES ($UserID,$StepCount,$Weight, $TimeStamp)
     `;
 
-    db.run(QUERY, {
+    db.all(QUERY, {
       $UserID: 2,
       $StepCount: 12,
       $Weight: 180,
       $TimeStamp: Date()
       },
-      () => { console.log(this); }
+      (error, rows) => { res.send(error || rows); }
     );
-    res.send('Entry Inserted');
 });
 
 app.get('/dashboard/entries', (req,res) => {
-  let QUERY = `
+  const QUERY = `
     SELECT *
     FROM DailyEntries
     LEFT OUTER JOIN Users
