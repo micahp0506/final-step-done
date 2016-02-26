@@ -15,6 +15,10 @@ app.get('/', (req,res) => {
   res.render('index.jade');
 });
 
+app.post('/login', (req, res) => {
+  res.render('index.jade')
+});
+
 app.listen(PORT, () => {
   console.log(`Listening YO, on PORT ${PORT}`);
 });
