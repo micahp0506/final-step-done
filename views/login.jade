@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    form(action='/register', method='POST')
+    form(action='/login', method='POST')
         .input-group
             label(for='email') Email
             input#email(type='email', name='email', value=email)
@@ -9,7 +9,6 @@ block content
             label(for='pass') Password
             input#pass(type='password', name='password', required)
         .input-group
-            label(for='pass-verify') Password Verify
-            input#verify(type='password', name='verify', required)
+            input(type='submit', value='Login')
         .input-group
             input(type='submit', value='Register')

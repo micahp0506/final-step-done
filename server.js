@@ -2,6 +2,7 @@
 
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
 const app = express();
 const db = new sqlite3.Database('./db/appData.sqlite');
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 // APP MIDDLEWARE
 app.set('view engine', 'jade');
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // ROUTE MIDDLEWARE
@@ -48,6 +50,10 @@ app.get('/dashboard/entries', (req,res) => {
     res.send(rows);
   });
 });
+
+app.get('/', (req, res) => {
+    res.render('login');
+})
 
 
 app.post('/login', (req, res) => {
