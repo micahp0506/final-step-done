@@ -71,19 +71,30 @@ app.get('/register', (req, res) => {
 
 app.post('/register', (req, res) => {
     if (req.body.password === req.body.verify) {
-        User.findOne({email: req.body.email}, (err, user) => {
-            if (err) throw (err);
 
-            if (user) {
-                res.redirect('/login');
-            } else {
-                User.create(req.body, (err) => {
+        const QUERY = `
+            SELECT * FROM Users WHERE Users.email = $email`;
+
+            db.run(QUERY, {$email: req.body.email},
+                (err) => {
                     if (err) throw (err);
 
-                    res.redirect('/login');
-                });
-            }
-        });
+                    if (null === false) {
+                        res.redirect('/');
+                    } else {
+                        const ENTRY = `
+                            INSERT INTO Users (Email, passwordHash)
+                            VALUES ($email, $passwordHash)`;
+
+                            db.run(ENTRY, {
+                                $email: req.body.email,
+                                $passwordHash: req.body.password
+                            })
+
+                            res.redirect('/');
+                    }
+            });
+
     }   else {
             res.render('register', {
                 email: req.body.email,
