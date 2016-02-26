@@ -17,6 +17,7 @@ app.get('/dashboard', (req,res) => {
   res.render('index.jade');
 });
 
+
 app.post('/dashboard/entries/new', (req,res) => {
   const QUERY = `
     INSERT INTO DailyEntries(UserID,StepCount,Weight,TimeStamp)
@@ -48,6 +49,10 @@ app.get('/dashboard/entries', (req,res) => {
   });
 });
 
+
+app.post('/login', (req, res) => {
+  res.render('index.jade')
+});
 
 
 app.listen(PORT, () => {
