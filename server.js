@@ -55,6 +55,34 @@ app.post('/login', (req, res) => {
 });
 
 
+app.get('/register', (req, res) => {
+    res.render('register');
+});
+
+app.post('/register', (req, res) => {
+    if (req.body.password === req.body.verify) {
+        User.findOne({email: req.body.email}, (err, user) => {
+            if (err) throw (err);
+
+            if (user) {
+                res.redirect('/login');
+            } else {
+                User.create(req.body, (err) => {
+                    if (err) throw (err);
+
+                    res.redirect('/login');
+                });
+            }
+        });
+    }   else {
+            res.render('register', {
+                email: req.body.email,
+                message: 'Passwords do not match'
+            });
+        }
+});
+
+
 app.listen(PORT, () => {
   console.log(`Listening YO, on PORT ${PORT}`);
 });
