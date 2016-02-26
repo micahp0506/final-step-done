@@ -1,0 +1,10 @@
+extends layout
+
+h1 Welcome to Your Daily Activity Tracker
+
+form(action='/register', method='POST')
+    .input-group
+        label(for='step') Enter Step Count
+        input#step(type='text', name='step')
+    .input-group
+        input(type='submit', value='Submit')
